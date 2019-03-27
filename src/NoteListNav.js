@@ -11,7 +11,7 @@ export default class NoteListNav extends React.Component {
   static contextType = NotefulContext;
 
   render () {
-  
+  console.log(this.context)
   return (
     <div className='NoteListNav'>
       <ul className='NoteListNav__list'>

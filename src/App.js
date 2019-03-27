@@ -10,9 +10,6 @@ import NotefulContext from './NotefulContext'
 // import AddNote from '../AddNote/AddNote'
 import dummyStore from './store'
 
-
-
-
 export default class App extends Component {
   state = {
     notes:[],
@@ -20,8 +17,53 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    // fake date loading from API call
-    setTimeout(() => this.setState(dummyStore), 200)
+    Promise.all ([
+      fetch (`http://localhost:9090/notes`),
+      fetch (`http://localhost:9090/folders`)])
+    .then(([notesResponse, foldersResponse]) => {
+      if (!notesResponse.ok){
+        throw new Error (notesResponse.status)
+      }
+      if (!foldersResponse.ok){
+        throw new Error (foldersResponse)
+      }
+      return Promise.all([notesResponse.json(), foldersResponse.json()])
+    })
+    .then (arrOfJsonRes => {
+      console.log(arrOfJsonRes)
+      this.setState({
+        notes: arrOfJsonRes[0],
+        folders: arrOfJsonRes[1], 
+      })
+    })
+    .catch(err => console.log(err));
+  }
+
+  handleAddFolder = folder => {
+    this.setState({
+      folders: [...this.state.folders, folder
+      ]
+    })
+  }
+
+  handleAddNotes = note => {
+    this.setState({
+      notes: [...this.state.notes, note]
+    })
+  }
+
+  handleDeleteFolder = folderId => {
+    const newFolders = this.state.folders.filter(folder => folder.id !== folderId)
+    this.setState({
+      folders: newFolders
+    })
+  }
+
+  handleDeleteNote = noteId => {
+    const newNote = this.state.notes.filter(note => note.id !== noteId)
+    this.setState({
+      notes: newNote
+    })
   }
 
 findFolder = (folders=[], folderId) =>
@@ -51,26 +93,16 @@ countNotesForFolder = (notes=[], folderId) =>
         )}
           <Route
           path='/note/:noteId'
-          // render={routeProps => {
-            // const { noteId } = routeProps.match.params
-            // const note = this.findNote(notes, noteId) || {}
-            // const folder = this.findFolder(folders, note.folderId)
-            // return (
               component={NotePageNav}
-                // {...routeProps}
-                // folder={folder}
               />
-            )
-          }}
-        />
-        {/* <Route
+        <Route
           path='/add-folder'
           component={NotePageNav}
         />
         <Route
           path='/add-note'
           component={NotePageNav}
-        /> */}
+        />
       </>
     )
   }
@@ -84,46 +116,14 @@ countNotesForFolder = (notes=[], folderId) =>
             exact
             key={path}
             path={path}
-            // render={routeProps => {
-            //   const { folderId } = routeProps.match.params
-            //   const notesForFolder = this.getNotesForFolder(notes, folderId)
-              // return (
                 component={NoteListMain}
-                  // {...routeProps}
-                  // notes={notesForFolder}
                 />
               )
-            }}
-          />
-        )}
+            }
         <Route
           path='/note/:noteId'
-          // render={routeProps => {
-          //   const { noteId } = routeProps.match.params
-          //   const note = this.findNote(notes, noteId)
-          //   return (
               component={NotePageMain}
-                // {...routeProps}
-                // note={note}
-              />
-            )
-          }}
-        />
-        {/* <Route
-          path='/add-folder'
-          // component={AddFolder}
-        />
-        <Route
-          path='/add-note'
-          render={routeProps => {
-            return (
-              <AddNote
-                {...routeProps}
-                folders={folders}
-              />
-            )
-          }}
-        /> */}
+          />
       </>
     )
   }
