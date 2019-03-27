@@ -1,14 +1,20 @@
 import React from 'react'
+import NotefulContext from './NotefulContext';
 
 import Note from './Note'
 // import CircleButton from '../CircleButton/CircleButton'
 // import './NoteListMain.css'
 
-export default function NoteListMain(props) {
+export default class NoteListMain extends React.Component {
+  
+  static contextType = NotefulContext;
+
+  render() {
+    const { notes } = this.context
   return (
     <section className='NoteListMain'>
       <ul>
-        {props.notes.map(note =>
+        {notes.map(note =>
           <li key={note.id}>
             <Note
               id={note.id}
@@ -33,7 +39,8 @@ export default function NoteListMain(props) {
     </section>
   )
 }
-
-NoteListMain.defaultProps = {
-  notes: [],
 }
+
+// NoteListMain.defaultProps = {
+//   notes: [],
+// }

@@ -3,7 +3,11 @@ import React from 'react'
 import Note from './Note'
 
 
-export default function NotePageMain(props) {
+export default class NotePageMain extends React.Component {
+  
+  render() {
+
+  
   return (
     <section className='NotePageMain'>
       <Note
@@ -18,4 +22,5 @@ export default function NotePageMain(props) {
       </div>
     </section>
   )
+}
 }

@@ -1,21 +1,29 @@
 
 import React from 'react'
+import NotefulContext from './NotefulContext';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import CircleButton from '../CircleButton/CircleButton'
 // import './NotePageNav.css'
 
-export default function NotePageNav(props) {
+export default class NotePageNave extends React.Component {
+  
+  static contextType = NotefulContext;
+
+  render() {
+    const {folders} = this.context
+  
   return (
     <div>
-      <button onClick={() => props.history.goBack()}>
+      <button onClick={() => folders.history.goBack()}>
         Back
       </button>
-      {props.folder && (
+      {folders && (
         <h3 className='NotePageNav__folder-name'>
-          {props.folder.name}
+          {folders.name}
         </h3>
       )}
     </div>
+  
 
     // <div className='NotePageNav'>
     //   <CircleButton
@@ -37,8 +45,9 @@ export default function NotePageNav(props) {
   )
 }
 
-NotePageNav.defaultProps = {
-  history: {
-    goBack: () => {}
-  }
 }
+// NotePageNav.defaultProps = {
+//   history: {
+//     goBack: () => {}
+//   }
+// }

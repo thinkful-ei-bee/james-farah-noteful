@@ -5,6 +5,7 @@ import NoteListNav from './NoteListNav'
 import NotePageNav from './NotePageNav'
 import NoteListMain from './NoteListMain'
 import NotePageMain from './NotePageMain'
+import NotefulContext from './NotefulContext'
 // import AddFolder from '../AddFolder/AddFolder'
 // import AddNote from '../AddNote/AddNote'
 import dummyStore from './store'
@@ -37,7 +38,7 @@ countNotesForFolder = (notes=[], folderId) =>
 
 
   renderNavRoutes() {
-    const { notes, folders } = this.state
+
     return (
       <>
         {['/', '/folder/:folderId'].map(path =>
@@ -45,25 +46,19 @@ countNotesForFolder = (notes=[], folderId) =>
             exact
             key={path}
             path={path}
-            render={routeProps =>
-              <NoteListNav
-                folders={folders}
-                notes={notes}
-                {...routeProps}
-              />
-            }
+            component={NoteListNav}
           />
         )}
           <Route
           path='/note/:noteId'
-          render={routeProps => {
-            const { noteId } = routeProps.match.params
-            const note = this.findNote(notes, noteId) || {}
-            const folder = this.findFolder(folders, note.folderId)
-            return (
-              <NotePageNav
-                {...routeProps}
-                folder={folder}
+          // render={routeProps => {
+            // const { noteId } = routeProps.match.params
+            // const note = this.findNote(notes, noteId) || {}
+            // const folder = this.findFolder(folders, note.folderId)
+            // return (
+              component={NotePageNav}
+                // {...routeProps}
+                // folder={folder}
               />
             )
           }}
@@ -81,7 +76,7 @@ countNotesForFolder = (notes=[], folderId) =>
   }
 
   renderMainRoutes() {
-    const { notes } = this.state
+
     return (
       <>
         {['/', '/folder/:folderId'].map(path =>
@@ -89,13 +84,13 @@ countNotesForFolder = (notes=[], folderId) =>
             exact
             key={path}
             path={path}
-            render={routeProps => {
-              const { folderId } = routeProps.match.params
-              const notesForFolder = this.getNotesForFolder(notes, folderId)
-              return (
-                <NoteListMain
-                  {...routeProps}
-                  notes={notesForFolder}
+            // render={routeProps => {
+            //   const { folderId } = routeProps.match.params
+            //   const notesForFolder = this.getNotesForFolder(notes, folderId)
+              // return (
+                component={NoteListMain}
+                  // {...routeProps}
+                  // notes={notesForFolder}
                 />
               )
             }}
@@ -103,13 +98,13 @@ countNotesForFolder = (notes=[], folderId) =>
         )}
         <Route
           path='/note/:noteId'
-          render={routeProps => {
-            const { noteId } = routeProps.match.params
-            const note = this.findNote(notes, noteId)
-            return (
-              <NotePageMain
-                {...routeProps}
-                note={note}
+          // render={routeProps => {
+          //   const { noteId } = routeProps.match.params
+          //   const note = this.findNote(notes, noteId)
+          //   return (
+              component={NotePageMain}
+                // {...routeProps}
+                // note={note}
               />
             )
           }}
@@ -134,9 +129,18 @@ countNotesForFolder = (notes=[], folderId) =>
   }
 
   render() {
+    const contextValue = {
+      folders: this.state.folders,
+      notes: this.state.notes,
+      addFolder: this.addFolder,
+      addNote: this.addNote,
+      deleteNote: this.deleteNote,
+    }
+
     return (
       <div className='App'>
-        <nav className='App__nav'>
+      <NotefulContext.Provider value={contextValue}>
+       <nav className='App__nav'>
           {this.renderNavRoutes()}
         </nav>
         <header className='App__header'>
@@ -148,6 +152,7 @@ countNotesForFolder = (notes=[], folderId) =>
         <main className='App__main'>
           {this.renderMainRoutes()}
         </main>
+        </NotefulContext.Provider>
       </div>
     )
   }
