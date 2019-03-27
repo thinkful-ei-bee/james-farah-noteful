@@ -1,53 +1,48 @@
 
 import React from 'react'
 import NotefulContext from './NotefulContext';
+import { findNote, findFolder } from './NoteHelpers';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import CircleButton from '../CircleButton/CircleButton'
+ import CircleButton from './CircleButton'
 // import './NotePageNav.css'
 
-export default class NotePageNave extends React.Component {
+export default class NotePageNav extends React.Component {
+  static defaultProps = {
+    history: {
+      goBack: () => {}
+    },
+    match: {
+      params: {}
+    }
+  }
   
   static contextType = NotefulContext;
 
   render() {
-    const {folders} = this.context
+    const {folders, notes} = this.context
+    const { noteId } = this.props.match.params
+    const note = findNote(notes, noteId) || {}
+    const folder = findFolder(folders, note.folderid)
   
   return (
-    <div>
-      <button onClick={() => folders.history.goBack()}>
+    <div className='NotePageNav'>
+      <CircleButton
+        tag='button'
+        role='link'
+        onClick={() => this.props.history.goBack()}
+        className='NotePageNav__back-button'
+      >
+        {/* <FontAwesomeIcon icon='chevron-left' /> */}
+        <br />
         Back
-      </button>
-      {folders && (
+      </CircleButton>
+      {folder && (
         <h3 className='NotePageNav__folder-name'>
-          {folders.name}
+          {folder.name}
         </h3>
       )}
     </div>
-  
-
-    // <div className='NotePageNav'>
-    //   <CircleButton
-    //     tag='button'
-    //     role='link'
-    //     onClick={() => props.history.goBack()}
-    //     className='NotePageNav__back-button'
-    //   >
-    //     <FontAwesomeIcon icon='chevron-left' />
-    //     <br />
-    //     Back
-    //   </CircleButton>
-    //   {props.folder && (
-    //     <h3 className='NotePageNav__folder-name'>
-    //       {props.folder.name}
-    //     </h3>
-    //   )}
-    // </div>
   )
 }
 
 }
-// NotePageNav.defaultProps = {
-//   history: {
-//     goBack: () => {}
-//   }
-// }

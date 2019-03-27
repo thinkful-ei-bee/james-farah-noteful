@@ -1,6 +1,6 @@
 import React from 'react'
 import NotefulContext from './NotefulContext';
-import { NavLink, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import Note from './Note'
 import CircleButton from './CircleButton'

@@ -2,7 +2,7 @@
 import React from 'react'
 import Note from './Note'
 import NotefulContext from './NotefulContext';
-import { countNotesForFolder } from './NoteHelpers'
+// import { countNotesForFolder } from './NoteHelpers'
 
 
 export default class NotePageMain extends React.Component {

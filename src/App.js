@@ -6,9 +6,9 @@ import NotePageNav from './NotePageNav'
 import NoteListMain from './NoteListMain'
 import NotePageMain from './NotePageMain'
 import NotefulContext from './NotefulContext'
-// import AddFolder from '../AddFolder/AddFolder'
+//  import AddFolder from '../AddFolder/AddFolder'
 // import AddNote from '../AddNote/AddNote'
-import dummyStore from './store'
+
 
 export default class App extends Component {
   state = {
