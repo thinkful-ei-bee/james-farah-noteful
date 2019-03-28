@@ -3,14 +3,9 @@ import { Link } from 'react-router-dom';
 import NotefulContext from './NotefulContext';
 //import { format } from 'date-fns';
 
-
-
 function deleteNote(noteId, cb){
   fetch(`http://localhost:9090/notes/${noteId}`, {
     method: 'DELETE',
-    // headers: {
-
-    // }
   })
   .then(res => {
     if (!res.ok) {
@@ -29,6 +24,7 @@ function deleteNote(noteId, cb){
 }
 
 export default function Note(props) {
+
     return (
       <NotefulContext.Consumer>
         {(context) => (

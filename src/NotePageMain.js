@@ -3,16 +3,23 @@ import React from 'react'
 import Note from './Note'
 import NotefulContext from './NotefulContext';
 import {findNote}  from './NoteHelpers'
+import {Redirect} from 'react-router'
 
 
 export default class NotePageMain extends React.Component {
   static contextType = NotefulContext;
 
   render(){
+
+
     const { notes } = this.context;
     console.log(notes)
     const note = findNote(notes, this.props.match.params.noteId)
     console.log(note)
+
+    if (!note){
+      return <Redirect to="/" />
+    }
     return (
     <section className='NotePageMain'>
       <Note
