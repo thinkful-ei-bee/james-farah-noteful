@@ -5,7 +5,6 @@ import NotefulContext from './NotefulContext';
 import {findNote}  from './NoteHelpers'
 
 
-
 export default class NotePageMain extends React.Component {
   static contextType = NotefulContext;
 

@@ -49,6 +49,7 @@ export default function Note(props) {
             }}
     
           >
+            {/* <FontAwesomeIcon icon='trash-alt' /> */}
             {' '}
             remove
           </button>

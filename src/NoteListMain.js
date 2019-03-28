@@ -7,7 +7,6 @@ import CircleButton from './CircleButton'
 // import './NoteListMain.css'
 
 
-
 export default class  NoteListMain extends React.Component {
   static contextType = NotefulContext;
   
@@ -35,6 +34,7 @@ export default class  NoteListMain extends React.Component {
           type='button'
           className='NoteListMain__add-note-button'
         >
+          {/* <FontAwesomeIcon icon='plus' /> */}
           <br />
           Note
         </CircleButton>

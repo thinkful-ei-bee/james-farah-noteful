@@ -4,7 +4,6 @@ import React from 'react'
 import CircleButton from './CircleButton'
 // import './NotePageNav.css'
 
-
 export default function NotePageNav(props) {
   return (
     <div className='NotePageNav'>
@@ -14,7 +13,7 @@ export default function NotePageNav(props) {
         onClick={() => props.history.goBack()}
         className='NotePageNav__back-button'
       >
-       
+        {/* <FontAwesomeIcon icon='chevron-left' /> */}
         <br />
         Back
       </CircleButton>

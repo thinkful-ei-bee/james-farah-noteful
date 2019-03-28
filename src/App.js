@@ -9,7 +9,7 @@ import AddFolder from './addFolder'
 import AddNote from './addNote'
 import { getNotesForFolder, findNote, findFolder } from './NoteHelpers'
 import NotefulContext from './NotefulContext'
-import './App.css'
+//import './App.css'
 
 class App extends Component {
   state = {
