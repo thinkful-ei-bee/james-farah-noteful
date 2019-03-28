@@ -6,6 +6,12 @@ import NotefulContext from './NotefulContext'
 
 
 export default class AddFolder extends Component {
+  static defaultProps = {
+    history: {
+      push: () => { }
+    },
+  }
+
   static contextType = NotefulContext;
   state= {
     error: null,
@@ -15,40 +21,34 @@ export default class AddFolder extends Component {
     e.preventDefault()
     const { name } = e.target
     const folder = {
-      
+      name: name['name'].value,
     }
-    this.setState({error: null})
     fetch(`http://localhost:9090/folders`,{
       method: 'POST',
+      body: JSON.stringify(folder),
       headers: {
         'content-type': 'application/json'
-      },
-      body: JSON.stringify(folder),
+      }
     })
       .then(res => {
-        if (!res.ok){
-          return res.json().then(error => {
-            throw error
-          })
-        }
-        return res.json()
-      })
-      .then(data => {
-        name.value = ''
-        this.context.addFolder(data)
-        this.props.history.push('/')
+        if (!res.ok)
+        return res.json().then(e => Promise.reject(e))
+          return res.json()
+        })
+        .then(folder => {
+        this.context.addFolder(folder)
+        this.props.history.push(`/folder/${folder.id}`)
       })
       .catch(error => {
-        this.setState({error})
+        console.log({ error })
       })
   }
 
   render() {
-    const { error } = this.state
     return (
       <section className='AddFolder'>
         <h2>Create a folder</h2>
-        <NotefulForm>
+        <NotefulForm onSubmit={this.handleSubmit}>
           <div className='field'>
             <label htmlFor='folder-name-input'>
               Name
@@ -58,7 +58,6 @@ export default class AddFolder extends Component {
           <div className='buttons'>
             <button 
               type='submit'
-              onSubmit={this.handleSubmit}
             > Add folder
             </button>
           </div>
