@@ -1,6 +1,6 @@
 import React from 'react'
 import NotefulContext from './NotefulContext';
-import { NavLink, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import Note from './Note'
 import CircleButton from './CircleButton'
@@ -8,27 +8,25 @@ import CircleButton from './CircleButton'
 
 
 
-export default class NoteListMain extends React.Component {
-  
-  
+export default class  NoteListMain extends React.Component {
   static contextType = NotefulContext;
-
-  render() {
   
-    const { notes } = this.context
-  return (
+  render() {
+    const { notes } = this.context;
+    console.log(notes);
+
+    return (
     <section className='NoteListMain'>
       <ul>
-        {notes.map(note => {
-        return (
+        {notes.map(note =>
           <li key={note.id}>
             <Note
               id={note.id}
               name={note.name}
               modified={note.modified}
             />
-          </li>)
-        })}
+          </li>
+        )}
       </ul>
       <div className='NoteListMain__button-container'>
         <CircleButton
@@ -38,14 +36,10 @@ export default class NoteListMain extends React.Component {
           className='NoteListMain__add-note-button'
         >
           <br />
-          Add Note
+          Note
         </CircleButton>
       </div>
     </section>
   )
+  } 
 }
-}
-
-// NoteListMain.defaultProps = {
-//   notes: [],
-// }

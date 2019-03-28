@@ -1,19 +1,28 @@
 import React, { Component } from 'react'
 import { Route, Link } from 'react-router-dom'
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import NoteListNav from './NoteListNav'
 import NotePageNav from './NotePageNav'
 import NoteListMain from './NoteListMain'
 import NotePageMain from './NotePageMain'
+import AddFolder from './addFolder'
+import AddNote from './addNote'
+import { getNotesForFolder, findNote, findFolder } from './NoteHelpers'
 import NotefulContext from './NotefulContext'
-// import AddFolder from '../AddFolder/AddFolder'
-// import AddNote from '../AddNote/AddNote'
-import dummyStore from './store'
+import './App.css'
 
-export default class App extends Component {
+class App extends Component {
   state = {
-    notes:[],
-    folders:[],
+    notes: [],
+    folders: [],
+  };
+
+  deleteNote = noteId => {
+    const newNotes = this.state.notes.filter(note => 
+      note.id !== noteId)
+    this.setState({
+      notes: newNotes
+    })
   }
 
   componentDidMount() {
@@ -39,48 +48,8 @@ export default class App extends Component {
     .catch(err => console.log(err));
   }
 
-  handleAddFolder = folder => {
-    this.setState({
-      folders: [...this.state.folders, folder
-      ]
-    })
-  }
-
-  handleAddNotes = note => {
-    this.setState({
-      notes: [...this.state.notes, note]
-    })
-  }
-
-  handleDeleteFolder = folderId => {
-    const newFolders = this.state.folders.filter(folder => folder.id !== folderId)
-    this.setState({
-      folders: newFolders
-    })
-  }
-
-  handleDeleteNote = noteId => {
-    const newNote = this.state.notes.filter(note => note.id !== noteId)
-    this.setState({
-      notes: newNote
-    })
-  }
-
-findFolder = (folders=[], folderId) =>
-  folders.find(folder => folder.id === folderId)
-findNote = (notes=[], noteId) =>
-  notes.find(note => note.id === noteId)
-getNotesForFolder = (notes=[], folderId) => (
-  (!folderId)
-    ? notes
-    : notes.filter(note => note.folderId === folderId)
-)
-countNotesForFolder = (notes=[], folderId) =>
-  notes.filter(note => note.folderId === folderId).length
-
-
   renderNavRoutes() {
-
+    const { notes, folders } = this.state
     return (
       <>
         {['/', '/folder/:folderId'].map(path =>
@@ -91,10 +60,10 @@ countNotesForFolder = (notes=[], folderId) =>
             component={NoteListNav}
           />
         )}
-          <Route
+        <Route
           path='/note/:noteId'
-              component={NotePageNav}
-              />
+          component={NotePageNav}          
+        />
         <Route
           path='/add-folder'
           component={NotePageNav}
@@ -108,7 +77,7 @@ countNotesForFolder = (notes=[], folderId) =>
   }
 
   renderMainRoutes() {
-
+    const { notes, folders } = this.state
     return (
       <>
         {['/', '/folder/:folderId'].map(path =>
@@ -116,37 +85,44 @@ countNotesForFolder = (notes=[], folderId) =>
             exact
             key={path}
             path={path}
-                component={NoteListMain}
-                />
-              )
-            }
+            component={NoteListMain}
+          />
+        )}
         <Route
           path='/note/:noteId'
-              component={NotePageMain}
-          />
+          component={NotePageMain}
+        />
+        <Route
+          path='/add-folder'
+          component={AddFolder}
+        />
+        <Route
+          path='/add-note'
+          component={AddNote}
+        />
       </>
     )
   }
 
   render() {
     const contextValue = {
-      folders: this.state.folders,
       notes: this.state.notes,
-      addFolder: this.addFolder,
+      folders: this.state.folders,
       addNote: this.addNote,
+      addFolder: this.addFolder,
       deleteNote: this.deleteNote,
     }
-
     return (
       <div className='App'>
       <NotefulContext.Provider value={contextValue}>
-       <nav className='App__nav'>
+        <nav className='App__nav'>
           {this.renderNavRoutes()}
         </nav>
         <header className='App__header'>
           <h1>
             <Link to='/'>Noteful</Link>
             {' '}
+            {/* <FontAwesomeIcon icon='check-double' /> */}
           </h1>
         </header>
         <main className='App__main'>
@@ -157,3 +133,5 @@ countNotesForFolder = (notes=[], folderId) =>
     )
   }
 }
+
+export default App
